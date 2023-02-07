@@ -18,14 +18,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $mail = null;
 
-    #[ORM\Column]
-    private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string The hashed motPasse
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private ?string $motPasse = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
@@ -33,7 +31,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255)]
@@ -41,6 +39,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $actif = null;
+
+    #[ORM\Column]
+    private ?bool $administrateur = null;
 
     public function getId(): ?int
     {
@@ -74,31 +75,25 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
+        return $this->administrateur ? ['ROLE_ADMIN'] : ['ROLE_USER'];
     }
 
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getMotPasse(): string
     {
-        return $this->password;
+        return $this->motPasse;
     }
 
-    public function setPassword(string $password): self
+    public function getPassword(): string
     {
-        $this->password = $password;
+        return $this->motPasse;
+    }
+
+    public function setMotPasse(string $motPasse): self
+    {
+        $this->motPasse = $motPasse;
 
         return $this;
     }
@@ -109,7 +104,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // $this->plainmotPasse = null;
     }
 
     public function getNom(): ?string
@@ -170,5 +165,19 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->actif = $actif;
 
         return $this;
+    }
+
+    public function setAdministrateur(bool $administrateur): self
+    {
+        $this->administrateur = $administrateur;
+
+        return $this;
+    }
+
+    public function getAdministrateur(bool $administrateur): self
+    {
+        $this->administrateur;
+
+        return $this->administrateur;
     }
 }
