@@ -11,15 +11,12 @@ class CreateAccount extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
-        $roles[] = 'ROLE_USER';
-
         $participant = new Participant();
         $participant->setMail("riquelme.manuel@hotmail.com");
         $participant->setPrenom("Manuel");
         $participant->setNom("Riquelme");
-        $participant->setPassword('$2y$13$l2DYTcwQdOjMImhRWmYK7eQm7sc1NS0g3Dmp1awjud5aMKR9Jkmgq');
-        $participant->setRoles($roles);
+        $participant->setMotPasse('$2y$13$l2DYTcwQdOjMImhRWmYK7eQm7sc1NS0g3Dmp1awjud5aMKR9Jkmgq');
+        $participant->setAdministrateur(true);
         $participant->setActif(true);
         $participant->setPseudo("Manu");
         $participant->setTelephone("0649384245");
