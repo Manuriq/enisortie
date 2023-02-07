@@ -13,7 +13,7 @@ class Etat
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $libelle = null;
 
     public function getId(): ?int
@@ -23,6 +23,7 @@ class Etat
 
     public function getLibelle(): ?string
     {
+        // Rajouter unique true
         return $this->libelle;
     }
 
