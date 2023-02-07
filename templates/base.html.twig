@@ -15,9 +15,16 @@
         {% endblock %}
     </head>
     <body>
+    <header>
         {% include('assets/navbar.html.twig') %}
+    </header>
+    <main>
         <div class="container large-margin-top">
-        {% block body %}{% endblock %}
+            {% block body %}{% endblock %}
         </div>
+    </main>
+    <footer>
+        {# TODO: Mettre un beau pied de page :-) #}
+    </footer>
     </body>
 </html>
