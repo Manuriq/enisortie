@@ -3,6 +3,7 @@
 {% block title %}{{ parent() }} - Accueil{% endblock %}
 
 {% block body %}
+  <a class="btn btn-primary" href="{{ path('app_createSortie') }}">Créer une sortie</a>
 <table class="table">
   <thead>
     <tr>
