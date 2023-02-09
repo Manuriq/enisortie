@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des campus{% endblock %}
+
+{% block body %}
+    <h1>Gestion des campus</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for campus in campuses %}
+            <tr>
+                <td>{{ campus.nom }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_admin_campus_edit', {'id': campus.id}) }}">Editer</a>
+                </td>
+                <td>{{ include('admin/campus/_delete_form.html.twig') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun campus trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_admin_campus_new') }}">Ajouter un campus</a>
+{% endblock %}
