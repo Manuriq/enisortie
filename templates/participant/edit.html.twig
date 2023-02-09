@@ -3,8 +3,9 @@
 {% block title %}{{ parent() }} - Editer son profile{% endblock %}
 
 {% block body %}
-    <h1>Editer le profile de {{ participant.prenom  }} {{ participant.nom  }}</h1>
+    <h1 class="text-center">Editer le profile de {{ participant.prenom  }} {{ participant.nom  }}</h1>
 
     {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }}
 
+    <a class="btn btn-primary mt-3" href="{{ path('app_participant_show', {'id': participant.id}) }}">Retour</a>
 {% endblock %}

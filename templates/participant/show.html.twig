@@ -3,23 +3,10 @@
 {% block title %}{{ parent() }} - Votre profile{% endblock %}
 
 {% block body %}
-    <h1>Votre Profile</h1>
+    <h1 class="text-center"> {{ participant.pseudo }}</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Email</th>
-                <td>{{ participant.mail }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                <td>Administrateur</td>
-                {% else %}
-                <td>Utilisateur</td>
-                {% endif %}
-                
-            </tr>
             <tr>
                 <th>Nom</th>
                 <td>{{ participant.nom }}</td>
@@ -37,8 +24,16 @@
                 <td>{{ participant.telephone }}</td>
             </tr>
             <tr>
-                <th>Actif</th>
-                <td>{{ participant.actif ? 'Oui' : 'Non' }}</td>
+                <th>Email</th>
+                <td>{{ participant.mail }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                <td>Administrateur</td>
+                {% else %}
+                <td>Utilisateur</td>
+                {% endif %}
             </tr>
         </tbody>
     </table>

@@ -1,21 +1,24 @@
 {{ form_start(form) }}
+
+    {{ form_label(form.pseudo,'Pseudo') }}
+    {{ form_widget(form.pseudo) }}
+
     {{ form_label(form.prenom,'Prénom') }}
     {{ form_widget(form.prenom) }}
 
     {{ form_label(form.nom,'Nom') }}
     {{ form_widget(form.nom) }}
 
-    {{ form_label(form.password,'Mot de passe') }}
-    {{ form_widget(form.password) }}
+    {{ form_label(form.telephone,'Téléphone') }}
+    {{ form_widget(form.telephone) }}
 
     {{ form_label(form.mail,'Email') }}
     {{ form_widget(form.mail) }}
 
-    {{ form_label(form.telephone,'Téléphone') }}
-    {{ form_widget(form.telephone) }}
+    {{ form_label(form.password,'Mot de passe') }}
+    {{ form_widget(form.password) }}
 
-    {{ form_label(form.pseudo,'Pseudo') }}
-    {{ form_widget(form.pseudo) }}
-
-    <button class="btn btn-primary mt-2">Sauvegarder</button>
-{{ form_end(form) }}
+<div>
+<button class="btn btn-primary me-md-5 mt-4">Sauvegarder</button>
+</div>
+    {{ form_end(form) }}

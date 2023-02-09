@@ -13,16 +13,16 @@ class ParticipantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('nom')
+            ->add('prenom')
+            ->add('pseudo')
+            ->add('telephone')
             ->add('mail')
             ->add('password', PasswordType::class, [
                 'hash_property_path' => 'password',
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('nom')
-            ->add('prenom')
-            ->add('pseudo')
-            ->add('telephone')
         ;
     }
 
