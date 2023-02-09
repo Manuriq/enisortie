@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des villes{% endblock %}
+
+{% block body %}
+    <h1>Gestion des villes</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-4">Nom</th>
+                <th class="col-4">CodePostal</th>
+                <th class="col-1"></th>
+                <th class="col-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ville in villes %}
+            <tr>
+                <td>{{ ville.nom }}</td>
+                <td>{{ ville.codePostal }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_admin_ville_edit', {'id': ville.id}) }}">Editer</a>
+                </td>
+                <td>
+                    {{ include('admin/ville/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucune ville trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_admin_ville_new') }}">Ajouter une ville</a>
+{% endblock %}
