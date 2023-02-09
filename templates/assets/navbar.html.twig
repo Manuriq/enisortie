@@ -13,7 +13,7 @@
         </li>
         {% if app.user %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Sorties</a>
+            <a class="nav-link active" aria-current="page" href="{{ path('app_sortie_index') }}">Sorties</a>
           </li> 
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{ path('app_participant_show', {'id' : app.user.id}) }}">Mon profil</a>

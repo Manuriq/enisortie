@@ -15,7 +15,7 @@ class CreateAccount extends Fixture
         $participant->setMail("riquelme.manuel@hotmail.com");
         $participant->setPrenom("Manuel");
         $participant->setNom("Riquelme");
-        $participant->setMotPasse('$2y$13$l2DYTcwQdOjMImhRWmYK7eQm7sc1NS0g3Dmp1awjud5aMKR9Jkmgq');
+        $participant->setMotPasse('$2y$13$s9jUFkujuUP4/GH2upsKHevtiaW2fsCyXCpKNbPT8QPYn4js22SE6');
         $participant->setAdministrateur(true);
         $participant->setActif(true);
         $participant->setPseudo("Manu");

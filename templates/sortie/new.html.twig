@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une sortie{% endblock %}
+
+{% block body %}
+    <h1>Créer une sortie</h1>
+
+    {{ include('sortie/_form.html.twig') }}
+
+    <a class="btn btn-primary" href="{{ path('app_sortie_index') }}">Retour</a>
+{% endblock %}

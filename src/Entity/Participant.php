@@ -176,8 +176,10 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getAdministrateur(bool $administrateur): self
     {
-        $this->administrateur;
-
         return $this->administrateur;
+    }
+
+    public function __toString() {
+        return $this->prenom . ' ' . $this->nom;
     }
 }

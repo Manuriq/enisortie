@@ -46,7 +46,7 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Participant $organisateur = null;
 
-    #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'listeSorties')]
+    #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'listeInscrits')]
     private Collection $listeInscrits;
 
     #[ORM\ManyToOne(inversedBy: 'sorties')]
