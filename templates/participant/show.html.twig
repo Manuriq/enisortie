@@ -8,20 +8,17 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ participant.id }}</td>
-            </tr>
-            <tr>
                 <th>Email</th>
                 <td>{{ participant.mail }}</td>
             </tr>
             <tr>
                 <th>Roles</th>
-                <td>{{ participant.roles ? participant.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Mot de Passe</th>
-                <td>{{ participant.password }}</td>
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                <td>Administrateur</td>
+                {% else %}
+                <td>Utilisateur</td>
+                {% endif %}
+                
             </tr>
             <tr>
                 <th>Nom</th>

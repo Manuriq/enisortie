@@ -23,7 +23,6 @@ class ParticipantType extends AbstractType
             ->add('prenom')
             ->add('pseudo')
             ->add('telephone')
-            ->add('actif')
         ;
     }
 
