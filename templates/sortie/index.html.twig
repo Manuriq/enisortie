@@ -5,16 +5,16 @@
 {% block body %}
     <h1>Liste des sorties</h1>
 
-    <table class="table">
+    <table class="table text-center">
         <thead>
             <tr>
                 <th>Nom</th>
-                <th>DateHeureDebut</th>
-                <th>Duree</th>
-                <th>DateLimiteInscription</th>
-                <th>NbInscriptionsMax</th>
-                <th>InfosSortie</th>
-                <th>actions</th>
+                <th>Date et heure de début</th>
+                <th>Durée</th>
+                <th>Date limite d'inscription</th>
+                <th>Nombre maximum d'inscription</th>
+                <th>Informations</th>
+                <th>Actions</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,14 +22,14 @@
         {% for sortie in sorties %}
             <tr>
                 <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.duree }}</td>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
+                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i') : '' }}</td>
+                <td>{{ sortie.duree }} minutes</td>
+                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d-m-Y') : '' }}</td>
                 <td>{{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.infosSortie }}</td>
                 <td>
-                    <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
-                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
+                    <a class="btn btn-primary" href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
+                    <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
                 </td>
                 <td>
                     {{ include('sortie/_delete_form.html.twig') }}
