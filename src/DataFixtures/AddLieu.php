@@ -11,18 +11,24 @@ class AddLieu extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $ville = new Ville();
-        $ville->setNom("Nantes");
-        $ville->setCodePostal("44000");
-        $manager->persist($ville);
+        for ($i = 0; $i < 5;$i++){
 
-        $lieu = new Lieu();
-        $lieu->setVille($ville);
-        $lieu->setNom("Visite au musée");
-        $lieu->setRue("17 rue docteur boileau");
-        $lieu->setLatitude(100);
-        $lieu->setLongitude(100);
-        $manager->persist($lieu);
+            $ville = new Ville();
+            $ville->setNom("Ville $i");
+            $ville->setCodePostal("CP :44.$i.00");
+            $manager->persist($ville);
+
+            for($j = 0; $j < 10; $j++) {
+
+                $lieu = new Lieu();
+                $lieu->setVille($ville);
+                $lieu->setNom("Visite au musée $j de la ville $i");
+                $lieu->setRue("17 rue docteur boileau");
+                $lieu->setLatitude(100+$j);
+                $lieu->setLongitude(100+$j);
+                $manager->persist($lieu);
+            }
+        }
         $manager->flush();
     }
 }

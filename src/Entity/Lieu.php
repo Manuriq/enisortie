@@ -6,6 +6,7 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LieuRepository::class)]
 class Lieu
@@ -13,25 +14,32 @@ class Lieu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['lieu'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['lieu'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['lieu'])]
     private ?string $rue = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['lieu'])]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['lieu'])]
     private ?float $longitude = null;
 
     #[ORM\ManyToOne(inversedBy: 'lieus')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['lieu'])]
     private ?Ville $ville = null;
 
     #[ORM\OneToMany(mappedBy: 'lieu', targetEntity: Sortie::class)]
+    #[Groups(['lieu'])]
     private Collection $sorties;
 
     public function __construct()

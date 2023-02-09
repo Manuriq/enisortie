@@ -2,8 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,7 +27,17 @@ class SortieType extends AbstractType
             ->add('campus')
             ->add('organisateur')
             ->add('listeInscrits')
-            ->add('lieu')
+            ->add('ville',EntityType::class,[
+                'class'=>Ville::class,
+                'query_builder'=>function (EntityRepository $er){
+                return $er->createQueryBuilder('v')->orderBy('v.codePostal','ASC');
+            },
+                'placeholder'=>'Choisissez une ville',
+            'mapped'=>false
+            ])
+            ->add('lieu',EntityType::class,[
+                'class'=>Lieu::class
+            ])
         ;
     }
 
@@ -30,6 +45,7 @@ class SortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            'mapped' => false
         ]);
     }
 }
