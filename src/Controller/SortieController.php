@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
 
-#[Route('/sortie')]
+#[Route('/')]
 class SortieController extends AbstractController
 {
     #[Route('/', name: 'app_sortie_index', methods: ['GET','POST'])]
@@ -30,7 +30,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/new/', name: 'app_sortie_new', methods: ['GET', 'POST'])]
+    #[Route('/sortie/new/', name: 'app_sortie_new', methods: ['GET', 'POST'])]
     public function new(Request $request, SortieRepository $sortieRepository,EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
@@ -66,7 +66,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sortie_show', methods: ['GET'])]
+    #[Route('/sortie/{id}', name: 'app_sortie_show', methods: ['GET'])]
     public function show(Sortie $sortie): Response
     {
         return $this->render('sortie/show.html.twig', [
@@ -74,7 +74,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
+    #[Route('/sortie/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository,EtatRepository $etatRepository): Response
     {
         //Controle si l'utilisateur connecté est bien l'organisateur de la sortie pour pouvoir la modifier
@@ -107,7 +107,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
+    #[Route('/sortie/{id}', name: 'app_sortie_delete', methods: ['POST'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$sortie->getId(), $request->request->get('_token'))) {
@@ -117,7 +117,7 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/inscription/{id}',name:'app_sortie_inscription')]
+    #[Route('/sortie/inscription/{id}',name:'app_sortie_inscription')]
     public function inscription(Sortie $sortie,SortieRepository $sortieRepository): Response{
         if($sortie->getDateLimiteInscription() < new \DateTime()){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
@@ -129,7 +129,7 @@ class SortieController extends AbstractController
 
     }
 
-    #[Route('/desinscription/{id}',name:'app_sortie_desinscription')]
+    #[Route('/sortie/desinscription/{id}',name:'app_sortie_desinscription')]
     public function desinscription( Sortie $sortie,SortieRepository $sortieRepository): Response{
         if($sortie->getDateHeureDebut() <= new \DateTime()){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
