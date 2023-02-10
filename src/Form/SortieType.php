@@ -6,11 +6,13 @@ use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use Doctrine\ORM\EntityRepository;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,12 +24,18 @@ class SortieType extends AbstractType
         $builder
             ->add('nom')
             ->add('dateHeureDebut',DateTimeType::class,[
-                'data'=> new \DateTime()])
-            ->add('duree')
+                'data'=> new \DateTime(),
+                'html5' => true,
+                'widget' => 'single_text',])
             ->add('dateLimiteInscription',DateType::class,[
-                'data'=> new \DateTime()])
+                'data'=> new \DateTime(),
+                'html5' => true,
+                'widget' => 'single_text',
+            ])
             ->add('nbInscriptionsMax')
+            ->add('duree', null, ['label' => 'Durée (en minutes)'])
             ->add('infosSortie')
+            ->add('campus')
             ->add('ville',EntityType::class,[
                 'class'=>Ville::class,
                 'query_builder'=>function (EntityRepository $er){
