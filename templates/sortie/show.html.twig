@@ -54,11 +54,11 @@
     {% endif %}
     {% if app.user in sortie.listeInscrits %}
         <div>
-        <a class="btn btn-primary mb-2 mt-1" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
+            <a class="btn btn-primary mb-2 mt-1" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
         </div>
     {% else %}
         <div>
-        <a class="btn btn-primary mb-2 mt-1" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
+            <a class="btn btn-primary mb-2 mt-1" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
         </div>
     {% endif %}
 

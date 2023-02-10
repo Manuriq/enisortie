@@ -3,6 +3,7 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
+    {% include 'sortie/filter/_formFilter.html.twig' %}
     <h1>Liste des sorties</h1>
 
     <table class="table text-center">
@@ -48,9 +49,13 @@
                 <td>
                     {% if sortie.organisateur != app.user %}
                         {% if app.user in sortie.listeInscrits %}
+                            {% if sortie.dateHeureDebut | date('d-m-Y') >= 'now'|date('d-m-Y') %}
                             <a class="btn btn-primary" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
+                            {% endif%}
                         {% else %}
-                            <a class="btn btn-primary" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
+                            {% if sortie.dateLimiteInscription|date('d-m-Y') > 'now'|date('d-m-Y')  %}
+                                <a class="btn btn-primary" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 </td>

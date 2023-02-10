@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\FiltreRechercheType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
@@ -13,15 +14,19 @@ use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/', name: 'app_sortie_index', methods: ['GET'])]
-    public function index(SortieRepository $sortieRepository): Response
+    #[Route('/', name: 'app_sortie_index', methods: ['GET','POST'])]
+    public function index(SortieRepository $sortieRepository,Request $request): Response
     {
+        $formFilter = $this->createForm(FiltreRechercheType::class);
+        $formFilter->handleRequest($request);
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sortieRepository->findAll(),
+            'formFilter' => $formFilter
         ]);
     }
 
@@ -114,6 +119,9 @@ class SortieController extends AbstractController
 
     #[Route('/inscription/{id}',name:'app_sortie_inscription')]
     public function inscription(Sortie $sortie,SortieRepository $sortieRepository): Response{
+        if($sortie->getDateLimiteInscription() < new \DateTime()){
+            return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
+        }
         $sortie->addListeInscrit($this->getUser());
         $sortieRepository->save($sortie,true);
 
@@ -123,6 +131,9 @@ class SortieController extends AbstractController
 
     #[Route('/desinscription/{id}',name:'app_sortie_desinscription')]
     public function desinscription( Sortie $sortie,SortieRepository $sortieRepository): Response{
+        if($sortie->getDateHeureDebut() <= new \DateTime()){
+            return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
+        }
         $sortie->removeListeInscrit($this->getUser());
         $sortieRepository->save($sortie,true);
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
