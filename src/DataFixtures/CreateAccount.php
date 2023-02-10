@@ -23,6 +23,19 @@ class CreateAccount extends Fixture
         $participant->setTelephone("0649384245");
         $participant->setCampus($this->getReference(AddCampus::CAMPUS_USER_REFERENCE));
         $manager->persist($participant);
+
+        $participant2 = new Participant();
+        $participant2->setMail("aurelien.robin@hotmail.com");
+        $participant2->setPrenom("Aurélien");
+        $participant2->setNom("Robin");
+        $participant2->setMotPasse('$2y$13$iGVUNIdUR2.7tQ10ka1R3uv0ThtX3lHoP5.05DfKxqvaTJXWKFwna'); //123456
+        $participant2->setAdministrateur(false);
+        $participant2->setActif(true);
+        $participant2->setPseudo("Athalfrid");
+        $participant2->setTelephone("0123456789");
+        $participant2->setCampus($this->getReference(AddCampus::CAMPUS_USER_REFERENCE));
+        $manager->persist($participant2);
+
         $manager->flush();
     }
 }

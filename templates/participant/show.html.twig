@@ -31,14 +31,6 @@
                 <th>Campus</th>
                 <td>{{ participant.campus }}</td>
             </tr>
-            <tr>
-                <th>Roles</th>
-                {% if 'ROLE_ADMIN' in app.user.roles %}
-                <td>Administrateur</td>
-                {% else %}
-                <td>Utilisateur</td>
-                {% endif %}
-            </tr>
         </tbody>
     </table>
 

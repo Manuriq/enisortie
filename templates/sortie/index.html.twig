@@ -10,29 +10,49 @@
             <tr>
                 <th>Nom</th>
                 <th>Date et heure de début</th>
-                <th>Durée</th>
                 <th>Date limite d'inscription</th>
                 <th>Nombre maximum d'inscription</th>
-                <th>Informations</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
                 <th>Actions</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
         {% for sortie in sorties %}
+
             <tr>
                 <td>{{ sortie.nom }}</td>
+
                 <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y H:i') : '' }}</td>
-                <td>{{ sortie.duree }} minutes</td>
+
                 <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d-m-Y') : '' }}</td>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.infosSortie }}</td>
+
+                <td>{{ sortie.listeInscrits.count }}/{{ sortie.nbInscriptionsMax }}</td>
+
+                <td>{{ sortie.etat }}</td>
+
+                <td>{{ (app.user in sortie.listeInscrits) ? '✓' : '' }}</td>
+
+                <td><a class="btn btn-info" href="{{ path('app_participant_show',{'id':sortie.organisateur.id}) }}">{{ sortie.organisateur.pseudo }}</a></td>
+
                 <td>
-                    <a class="btn btn-primary" href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
-                    <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
+                    {# Si l'utilisateur connecté est l'organisateur de la sortie il peut la modifier sinon il ne peut que la consulter #}
+                    {% if app.user == sortie.organisateur %}
+                        <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
+                    {% endif %}
                 </td>
                 <td>
-                    {{ include('sortie/_delete_form.html.twig') }}
+                    {% if sortie.organisateur != app.user %}
+                        {% if app.user in sortie.listeInscrits %}
+                            <a class="btn btn-primary" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
+                        {% else %}
+                            <a class="btn btn-primary" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
+                        {% endif %}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
