@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,6 +21,7 @@ class CreateAccount extends Fixture
         $participant->setActif(true);
         $participant->setPseudo("Manu");
         $participant->setTelephone("0649384245");
+        $participant->setCampus($this->getReference(AddCampus::CAMPUS_USER_REFERENCE));
         $manager->persist($participant);
         $manager->flush();
     }

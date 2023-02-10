@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
@@ -32,6 +34,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Unique]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255)]
@@ -42,6 +45,15 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $administrateur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'participants')]
+    private ?Campus $campus = null;
+
+    #[ORM\OneToMany(mappedBy: 'organisateur',targetEntity: Sortie::class)]
+    private Collection $sorties;
+
+    #[ORM\ManyToMany(targetEntity: Sortie::class, mappedBy: 'listeInscrits')]
+    private Collection $listeInscrits;
 
     public function getId(): ?int
     {
@@ -188,5 +200,53 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString() {
         return $this->prenom . ' ' . $this->nom;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getListeInscrits(): Collection
+    {
+        return $this->listeInscrits;
+    }
+
+    /**
+     * @param Collection $listeInscrits
+     */
+    public function setListeInscrits(Collection $listeInscrits): void
+    {
+        $this->listeInscrits = $listeInscrits;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    /**
+     * @param Collection $sorties
+     */
+    public function setSorties(Collection $sorties): void
+    {
+        $this->sorties = $sorties;
+    }
+
+    /**
+     * @return Campus|null
+     */
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    /**
+     * @param Campus|null $campus
+     */
+    public function setCampus(?Campus $campus): void
+    {
+        $this->campus = $campus;
     }
 }
