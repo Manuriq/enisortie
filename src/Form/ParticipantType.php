@@ -18,6 +18,7 @@ class ParticipantType extends AbstractType
             ->add('pseudo')
             ->add('telephone')
             ->add('mail')
+            ->add('campus')
             ->add('password', PasswordType::class, [
                 'hash_property_path' => 'password',
                 'mapped' => false,

@@ -28,6 +28,10 @@
                 <td>{{ participant.mail }}</td>
             </tr>
             <tr>
+                <th>Campus</th>
+                <td>{{ participant.campus }}</td>
+            </tr>
+            <tr>
                 <th>Roles</th>
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                 <td>Administrateur</td>

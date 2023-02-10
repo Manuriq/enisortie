@@ -35,7 +35,6 @@ class ParticipantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $participantRepository->save($participant, true);
 
-            //Dans la méthode redirectToRoute -> 1er param -> la route, 2eme param -> un tableau de parametres, 3eme param -> status de la réponse
             return $this->redirectToRoute('app_participant_show', ['id'=>$participant->getId()], Response::HTTP_SEE_OTHER);
         }
 
