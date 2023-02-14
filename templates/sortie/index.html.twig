@@ -50,7 +50,7 @@
                     {% if app.user == sortie.organisateur%}
                         <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
                         {% if sortie.etat == 'En création' %}
-                            <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Publier</a>
+                            <a class="btn btn-primary mt-2" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Publier</a>
                        {% endif %}
                     {% else %}
                         <a class="btn btn-primary" href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
@@ -59,11 +59,11 @@
                 <td>
                     {% if sortie.organisateur != app.user %}
                         {% if app.user in sortie.listeInscrits %}
-                            {% if sortie.dateHeureDebut | date('d-m-Y') >= 'now'|date('d-m-Y') %}
+                            {% if sortie.dateHeureDebut | date('d-m-Y') <= 'now'|date('d-m-Y') %}
                             <a class="btn btn-primary" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
                             {% endif%}
                         {% else %}
-                            {% if sortie.dateLimiteInscription|date('d-m-Y') > 'now'|date('d-m-Y')  %}
+                            {% if sortie.dateLimiteInscription|date('d-m-Y') >= 'now'|date('d-m-Y')  %}
                                 <a class="btn btn-primary" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
                             {% endif %}
                         {% endif %}

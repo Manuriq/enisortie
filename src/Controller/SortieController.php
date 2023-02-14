@@ -132,11 +132,12 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/desinscription/{id}',name:'app_sortie_desinscription')]
     public function desinscription( Sortie $sortie,SortieRepository $sortieRepository): Response{
-        if($sortie->getDateHeureDebut() <= new \DateTime()){
+        if($sortie->getDateHeureDebut() >= new \DateTime()){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
         }
         $sortie->removeListeInscrit($this->getUser());
         $sortieRepository->save($sortie,true);
+
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 }
