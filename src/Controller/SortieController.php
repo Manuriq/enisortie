@@ -2,19 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Etat;
-use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\FiltreRechercheType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
 
 #[Route('/')]
 class SortieController extends AbstractController
@@ -24,8 +20,15 @@ class SortieController extends AbstractController
     {
         $formFilter = $this->createForm(FiltreRechercheType::class);
         $formFilter->handleRequest($request);
+        if($formFilter->isSubmitted()){
+            $data = $formFilter->getData();
+//            dd($data);
+            $sorties = $sortieRepository->filtrerLaRecherche($data,$this->getUser());
+        }else{
+            $sorties =$sortieRepository->findAll();
+        }
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->findAll(),
+            'sorties' => $sorties,
             'formFilter' => $formFilter
         ]);
     }
@@ -42,13 +45,11 @@ class SortieController extends AbstractController
 
             if($form->get('publish')->isClicked()){
                 $etat =$etatRepository->findBy(['libelle' => 'Ouverte']);
-//                dd($etat);
                 $sortie->setEtat($etat[0]);
             }
 
             if($form->get('save')->isClicked()){
                 $etat =$etatRepository->findBy(['libelle' => 'En création']);
-//                    dd($etat);
                 $sortie->setEtat($etat[0]);
             }
             $sortie->setOrganisateur($this->getUser());
@@ -119,7 +120,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/inscription/{id}',name:'app_sortie_inscription')]
     public function inscription(Sortie $sortie,SortieRepository $sortieRepository): Response{
-        if($sortie->getDateLimiteInscription() < new \DateTime()){
+        if($sortie->getDateLimiteInscription() < new \DateTime() and $sortie->getEtat()->getLibelle() == 'Ouverte'){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
         }
         $sortie->addListeInscrit($this->getUser());

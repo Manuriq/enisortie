@@ -20,7 +20,7 @@ class FiltreRechercheType extends AbstractType
             ->add('campus',EntityType::class,[
                 'class'=>'App\Entity\Campus',
                 'placeholder'=>'Choix du campus',
-                'mapped'=>false
+                'required'=>false
             ])
             ->add('nom',TextType::class,[
                 'label'=>'Le nom de la sortie contient',
@@ -28,13 +28,11 @@ class FiltreRechercheType extends AbstractType
                 'attr'=>['placeholder'=>'Search']
             ])
             ->add('dateDebut',DateType::class,[
-                'data'=>new \DateTime(),
                 'label'=>'Entre :',
                 'required'=>false,
                 'html5'=> true,
                 'widget'=>'single_text'])
             ->add('dateFin',DateType::class,[
-                'data'=>new \DateTime(),
                 'label'=>' et le ',
                 'required'=>false,
                 'html5'=> true,

@@ -35,7 +35,7 @@ class SortieType extends AbstractType
             ->add('nbInscriptionsMax')
             ->add('duree', null, ['label' => 'Durée (en minutes)'])
             ->add('infosSortie')
-            ->add('campus')
+            ->add('campus',)
             ->add('ville',EntityType::class,[
                 'class'=>Ville::class,
                 'query_builder'=>function (EntityRepository $er){

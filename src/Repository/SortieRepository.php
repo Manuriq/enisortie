@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,28 +40,53 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function filtrerLaRecherche(mixed $data = null, $user = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
 
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if($data){
+            if($data['campus']){
+                $queryBuilder->andWhere('s.campus = :campus');
+                $queryBuilder->setParameter('campus', $data['campus']);
+            }
+
+            if($data['nom']){
+                $queryBuilder->andWhere('s.nom LIKE :nom');
+                $queryBuilder->setParameter('nom', '%'.$data['nom'].'%');
+            }
+
+            if($data['dateDebut']){
+                $queryBuilder->andWhere('s.dateHeureDebut >= :dateDebut');
+                $queryBuilder->setParameter('dateDebut', $data['dateDebut']);
+            }
+
+            if($data['dateFin']){
+                $queryBuilder->andWhere('s.dateHeureDebut <= :dateFin');
+                $queryBuilder->setParameter('dateFin', $data['dateFin']);
+            }
+
+            if($data['checkOrganisateur'] ){
+                $queryBuilder->andWhere('s.organisateur = :userConnnecte');
+                $queryBuilder->setParameter('userConnnecte',$user );
+            }
+
+            if($data['checkSortiesInscrit']){
+                $queryBuilder->join('s.listeInscrits','u');
+                $queryBuilder->andWhere(':userConnecte  MEMBER OF s.listeInscrits')->setParameter(':userConnecte',$user);
+            }
+
+            if($data['checkSortiesNonInscrit']){
+                $queryBuilder->leftJoin('s.listeInscrits','us');
+                $queryBuilder->andWhere(' :userConnecte NOT MEMBER OF s.listeInscrits')->setParameter(':userConnecte',$user);
+            }
+
+            if($data['checkSortiesPassees'] ){
+                $queryBuilder->andWhere('s.dateHeureDebut < :checkSortiesPassees');
+                $queryBuilder->setParameter('checkSortiesPassees', new \DateTime());
+            }
+        }
+
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
+    }
 }
