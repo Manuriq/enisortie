@@ -44,13 +44,13 @@ class SortieController extends AbstractController
 //
 
             if($form->get('publish')->isClicked()){
-                $etat =$etatRepository->findBy(['libelle' => 'Ouverte']);
-                $sortie->setEtat($etat[0]);
+                $etat =$etatRepository->findOneBy(['libelle' => 'Ouverte']);
+                $sortie->setEtat($etat);
             }
 
             if($form->get('save')->isClicked()){
-                $etat =$etatRepository->findBy(['libelle' => 'En création']);
-                $sortie->setEtat($etat[0]);
+                $etat =$etatRepository->findOneBy(['libelle' => 'En création']);
+                $sortie->setEtat($etat);
             }
             $sortie->setOrganisateur($this->getUser());
             $sortie->addListeInscrit($this->getUser());
