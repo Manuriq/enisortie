@@ -4,9 +4,13 @@ namespace App\Form;
 
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints\File;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Metadata\Driver\YamlDriver;
 
 class ParticipantType extends AbstractType
 {
@@ -19,6 +23,13 @@ class ParticipantType extends AbstractType
             ->add('telephone')
             ->add('mail')
             ->add('campus')
+            ->add('imageFile', VichFileType::class , [
+                'required' => false,
+                'label' => 'Photo',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ]
+            ])
             ->add('password', PasswordType::class, [
                 'hash_property_path' => 'password',
                 'mapped' => false,

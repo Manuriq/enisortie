@@ -5,7 +5,13 @@
 {% block body %}
     <h1 class="text-center"> {{ participant.pseudo }}</h1>
 
-    <table class="table">
+<div class="container mt-5">
+    <div style='float:left' class="row col-12 col-md-6">
+        <img style="max-width: 30%;" src="{{ vich_uploader_asset(participant, 'imageFile') }}">
+    </div>
+
+    <div class="col-md-6" style='float:right'>
+       <table class="table">
         <tbody>
             <tr>
                 <th>Nom</th>
@@ -32,8 +38,9 @@
                 <td>{{ participant.campus }}</td>
             </tr>
         </tbody>
-    </table>
+       </table>
+    </div>
+</div>
 
-    <a class="btn btn-primary" href="{{ path('app_participant_edit', {'id': participant.id}) }}">Editer</a>
-
+    <a class="btn btn-primary mt-5" href="{{ path('app_participant_edit', {'id': participant.id}) }}">Editer</a>
 {% endblock %}

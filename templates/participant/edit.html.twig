@@ -5,7 +5,15 @@
 {% block body %}
     <h1 class="text-center">Editer le profile de {{ participant.prenom  }} {{ participant.nom  }}</h1>
 
-    {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }}
-
+<div class="container mt-5">
+    <div style='float:left' class="row col-12 col-md-6 mt-4">
+        <img style="max-width: 50%;" src="{{ vich_uploader_asset(participant, 'imageFile') }}">
+    </div>
+    <div class="col-md-6" style='float:left'>
+       {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
+</div>
+<div class="text-center">
     <a class="btn btn-primary mt-3" href="{{ path('app_participant_show', {'id': participant.id}) }}">Retour</a>
+</div>
 {% endblock %}
