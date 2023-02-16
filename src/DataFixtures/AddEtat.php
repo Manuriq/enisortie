@@ -36,6 +36,8 @@ class AddEtat extends Fixture
 
         $etat7 = new Etat();
         $etat7->setLibelle("Annulée");
+        $manager->persist($etat7);
+
         $manager->flush();
     }
 }
