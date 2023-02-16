@@ -23,11 +23,11 @@ class SortieController extends AbstractController
         $formFilter->handleRequest($request);
         if($formFilter->isSubmitted()){
             $data = $formFilter->getData();
-//            dd($data);
             $sorties = $sortieRepository->filtrerLaRecherche($data,$this->getUser());
         }else{
-            $sorties =$sortieRepository->findAll();
+            $sorties =$sortieRepository->filtrerLaRecherche();
         }
+
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sorties,
             'formFilter' => $formFilter
@@ -88,15 +88,15 @@ class SortieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($form->get('publish')->isClicked()){
-                $etat =$etatRepository->findBy(['libelle' => 'Ouverte']);
+                $etat =$etatRepository->findOneBy(['libelle' => 'Ouverte']);
 //                dd($etat);
-                $sortie->setEtat($etat[0]);
+                $sortie->setEtat($etat);
             }
 
             if($form->get('save')->isClicked()){
-                $etat =$etatRepository->findBy(['libelle' => 'En création']);
+                $etat =$etatRepository->findOneBy(['libelle' => 'En création']);
 //                    dd($etat);
-                $sortie->setEtat($etat[0]);
+                $sortie->setEtat($etat);
             }
             $sortieRepository->save($sortie, true);
 
@@ -121,7 +121,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/inscription/{id}',name:'app_sortie_inscription')]
     public function inscription(Sortie $sortie,SortieRepository $sortieRepository): Response{
-        if($sortie->getDateLimiteInscription() < new \DateTime() and $sortie->getEtat()->getLibelle() == 'Ouverte'){
+        if($sortie->getDateLimiteInscription() >= new \DateTime() and $sortie->getEtat()->getLibelle() == 'Ouverte'){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
         }
         $sortie->addListeInscrit($this->getUser());
@@ -140,6 +140,19 @@ class SortieController extends AbstractController
         $sortieRepository->save($sortie,true);
 
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/sortie/annulation/{id}',name:'app_sortie_annulation')]
+    public function annulation(Sortie $sortie,SortieRepository $sortieRepository, EtatRepository $etatRepository): Response{
+            $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Annulée']));
+            $listeParticipant =$sortie->getListeInscrits();
+            foreach ($listeParticipant as $participant){
+                $sortie->removeListeInscrit($participant);
+            }
+            $sortieRepository->save($sortie,true);
+            return $this->redirectToRoute('app_sortie_index',[],Response::HTTP_SEE_OTHER);
+
+
     }
 
 }

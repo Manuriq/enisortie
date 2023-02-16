@@ -6,7 +6,7 @@
     {% include 'assets/banner.html.twig' %}
 
     <div class="text-lg-end mt-4">Date d'aujourd'hui : {{ "now"|date('d-m-Y') }}</div>
-    <h1 class="text-center mt-2">Bonjour {{ app.user }} !</h1>
+    <h1 class="text-center mt-2">Bonjour {{ app.user }} {{ app.user.roles == ['ROLE_ADMIN'] ? '- <i>Admin</i> ' :'' }}!</h1>
 
     <h1 class="mt-5">Filtrer les sorties</h1>
     {% include 'sortie/filter/_formFilter.html.twig' %}
@@ -47,7 +47,7 @@
 
                 <td>
                     {# Si l'utilisateur connecté est l'organisateur de la sortie il peut la modifier sinon il ne peut que la consulter #}
-                    {% if app.user == sortie.organisateur%}
+                    {% if app.user == sortie.organisateur and sortie.etat.libelle != 'Annulée'%}
                         <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
                         {% if sortie.etat == 'En création' %}
                             <a class="btn btn-primary mt-2" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Publier</a>
@@ -57,16 +57,20 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if sortie.organisateur != app.user %}
+                    {% if sortie.organisateur != app.user and sortie.etat.libelle != 'Annulée'%}
                         {% if app.user in sortie.listeInscrits %}
-                            {% if sortie.dateHeureDebut | date('d-m-Y') <= 'now'|date('d-m-Y') %}
+                            {% if sortie.dateHeureDebut  >= 'now' %}
                             <a class="btn btn-primary" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
                             {% endif%}
                         {% else %}
-                            {% if sortie.dateLimiteInscription|date('d-m-Y') >= 'now'|date('d-m-Y')  %}
+                            {% if sortie.dateLimiteInscription >= 'now'  %}
                                 <a class="btn btn-primary" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
                             {% endif %}
                         {% endif %}
+                    {% else %}
+                        {% if sortie.dateHeureDebut  >= 'now' and sortie.etat.libelle != 'Annulée' %}
+                            <a class="btn btn-danger" href="{{ path('app_sortie_annulation',{'id':sortie.id}) }}">Annuler</a>
+                        {% endif%}
                     {% endif %}
                 </td>
             </tr>
