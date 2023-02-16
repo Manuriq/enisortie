@@ -47,14 +47,16 @@
 
                 <td>
                     {# Si l'utilisateur connecté est l'organisateur de la sortie il peut la modifier sinon il ne peut que la consulter #}
-                    {% if app.user == sortie.organisateur and sortie.etat.libelle != 'Annulée'%}
-                        <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
+                    {% if app.user == sortie.organisateur %}
                         {% if sortie.etat == 'En création' %}
-                            <a class="btn btn-primary mt-2" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Publier</a>
+                            <a class="btn btn-primary" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
+                            {% if sortie.etat.libelle == 'En création' %}
+                                <a class="btn btn-primary mt-2" href="{{ path('app_sortie_publish', {'id': sortie.id}) }}" onclick="return confirm('Voulez-vous publier cette sortie?');">Publier</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="btn btn-primary" href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
+                        {% endif %}
                        {% endif %}
-                    {% else %}
-                        <a class="btn btn-primary" href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Voir</a>
-                    {% endif %}
                 </td>
                 <td>
                     {% if sortie.organisateur != app.user and sortie.etat.libelle != 'Annulée'%}
@@ -63,7 +65,7 @@
                             <a class="btn btn-primary" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
                             {% endif%}
                         {% else %}
-                            {% if sortie.dateLimiteInscription >= 'now'  %}
+                            {% if sortie.dateLimiteInscription >= 'now' and sortie.etat.libelle != 'En création' %}
                                 <a class="btn btn-primary" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
                             {% endif %}
                         {% endif %}

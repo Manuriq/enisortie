@@ -25,6 +25,9 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
+        if($this->getUser() != $participant){
+            return $this->redirectToRoute('app_sortie_index');
+        }
         $form = $this->createForm(ParticipantType::class, $participant);
         if($request->request->get("password") == null){
             $request->request->set("password", $participant->getPassword());

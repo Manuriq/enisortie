@@ -15,6 +15,11 @@
             <div class="m-1">{{ form_widget(formFilter.dateDebut) }}</div>
             <div class="m-1">{{ form_label(formFilter.dateFin) }}</div>
             <div class="m-1">{{ form_widget(formFilter.dateFin) }}</div>
+            <div class="m-1"><button type="button" class="btn " onclick="function resetDate() {
+                document.querySelector('#filtre_recherche_dateDebut').value = null;
+                document.querySelector('#filtre_recherche_dateFin').value = null;
+            }
+            resetDate()">X</button></div>
         </div>
     </div>
 

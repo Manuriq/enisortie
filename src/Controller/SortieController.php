@@ -80,7 +80,7 @@ class SortieController extends AbstractController
     public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository,EtatRepository $etatRepository): Response
     {
         //Controle si l'utilisateur connecté est bien l'organisateur de la sortie pour pouvoir la modifier
-        if($this->getUser() != $sortie->getOrganisateur()){
+        if($this->getUser() != $sortie->getOrganisateur() || $sortie->getEtat()->getLibelle() != 'En création'){
             return $this->redirectToRoute('app_sortie_index');
         }
         $form = $this->createForm(SortieType::class, $sortie);
@@ -133,7 +133,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/desinscription/{id}',name:'app_sortie_desinscription')]
     public function desinscription( Sortie $sortie,SortieRepository $sortieRepository): Response{
-        if($sortie->getDateHeureDebut() >= new \DateTime()){
+        if($sortie->getDateHeureDebut() >= new \DateTime() and $sortie->getEtat()->getLibelle() == 'Ouverte'){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
         }
         $sortie->removeListeInscrit($this->getUser());
@@ -144,6 +144,9 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/annulation/{id}',name:'app_sortie_annulation')]
     public function annulation(Sortie $sortie,SortieRepository $sortieRepository, EtatRepository $etatRepository): Response{
+        if($this->getUser() != $sortie->getOrganisateur()){
+            return $this->redirectToRoute('app_sortie_index');
+        }
             $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Annulée']));
             $listeParticipant =$sortie->getListeInscrits();
             foreach ($listeParticipant as $participant){
@@ -152,7 +155,17 @@ class SortieController extends AbstractController
             $sortieRepository->save($sortie,true);
             return $this->redirectToRoute('app_sortie_index',[],Response::HTTP_SEE_OTHER);
 
+    }
 
+    #[Route('/sortie/publish/{id}',name:'app_sortie_publish')]
+    public function publish(Sortie $sortie,SortieRepository $sortieRepository, EtatRepository $etatRepository): Response{
+        if($this->getUser() != $sortie->getOrganisateur() and $sortie->getEtat()->getLibelle() == 'En création'){
+            return $this->redirectToRoute('app_sortie_index');
+        }
+        $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+        $sortieRepository->save($sortie,true);
+
+        return $this->redirectToRoute('app_sortie_index',[],Response::HTTP_SEE_OTHER);
     }
 
 }

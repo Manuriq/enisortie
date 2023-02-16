@@ -48,7 +48,7 @@
 
     <a class="btn btn-primary mb-2" href="{{ path('app_sortie_index') }}">Retour</a>
 
-    {% if sortie.organisateur == app.user %}
+    {% if sortie.organisateur == app.user and sortie.etat.libelle != 'Annulée'%}
     <a class="btn btn-primary mb-2" href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Editer</a>
         {% if sortie.etat.libelle != 'Annulée' %}
             {{ include('sortie/_delete_form.html.twig') }}

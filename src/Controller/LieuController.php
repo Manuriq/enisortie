@@ -20,18 +20,13 @@ class LieuController extends AbstractController
     #[Route('/{idVille}', name: 'app_lieu_index', methods: ['GET'])]
     public function index(LieuRepository $lieuRepository,Ville $idVille,VilleRepository $villeRepository,SerializerInterface $serializer): JsonResponse
     {
-        //On va chercher les lieux situés dans la ville demandée
         $ville = $villeRepository->find($idVille);
         $lieuByVille = $lieuRepository->getLieuByVille($ville);
 
-        //Création du JSON en utilisant le Serializer qui permet de transformer un objet en un format spécifique : JSON, XML, YAML,...
         $json = $serializer->serialize($lieuByVille,'json',['groups'=>['lieu']]);
 
-        //Création du JsonResponse pour renvoyer les lieux au format JSON
         $response = new JsonResponse();
-        //Paramètrage de la  JsonResponse
         $response->headers->set('Content-Type','application/json');
-        //Passage
         $response->setContent($json);
         return $response;
     }
