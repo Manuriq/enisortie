@@ -61,13 +61,13 @@
     {% endif %}
 
     {% if app.user in sortie.listeInscrits %}
-        {% if sortie.dateHeureDebut < 'now' %}
+        {% if sortie.dateHeureDebut < 'now' and sortie.etat.libelle != 'Annulée' %}
         <div>
             <a class="btn btn-primary mb-2 mt-1" href="{{ path('app_sortie_desinscription',{'id':sortie.id}) }}">Désinscription</a>
         </div>
         {% endif %}
     {% else %}
-        {% if sortie.dateLimiteInscription >= 'now'  %}
+        {% if sortie.dateLimiteInscription >= 'now' and sortie.etat.libelle != 'Annulée' %}
             <div>
                 <a class="btn btn-primary mb-2 mt-1" href="{{ path('app_sortie_inscription',{'id':sortie.id}) }}">Inscription</a>
             </div>
