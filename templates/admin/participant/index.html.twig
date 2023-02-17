@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Mail</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Pseudo</th>
+                <th>Telephone</th>
+                <th>Actif</th>
+                <th>Administrateur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for participant in participants %}
+            <tr>
+                <td>{{ participant.id }}</td>
+                <td>{{ participant.mail }}</td>
+                <td>{{ participant.nom }}</td>
+                <td>{{ participant.prenom }}</td>
+                <td>{{ participant.pseudo }}</td>
+                <td>{{ participant.telephone }}</td>
+                <td>{{ participant.actif ? 'Oui' : 'Non' }}</td>
+                {% if 'ROLE_ADMIN' in participant.roles %}
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_admin_participant_edit_adminstate', {'id': participant.id}) }}">Oui</a>
+                </td>
+                {% else %}
+                <td>
+                    <a class="btn btn-danger" href="{{ path('app_admin_participant_edit_adminstate', {'id': participant.id}) }}">Non</a>
+                </td>
+                {% endif %}
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_admin_participant_edit', {'id': participant.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">Aucun utilisateurs trouvé mais c'est bisarre vu que t'es connecté</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_admin_participant_new') }}">Créer un utilisateur</a>
+{% endblock %}

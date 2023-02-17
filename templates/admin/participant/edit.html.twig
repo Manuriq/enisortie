@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer {{ participant.prenom }} {{ participant.nom }}{% endblock %}
+
+{% block body %}
+    <h1>Editer {{ participant.prenom }} {{ participant.nom }}</h1>
+
+    {{ include('admin/participant/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+
+    <a class="btn btn-primary mb-2" href="{{ path('app_admin_participant_index') }}">Retour</a>
+
+    {{ include('admin/participant/_delete_form.html.twig') }}
+{% endblock %}
