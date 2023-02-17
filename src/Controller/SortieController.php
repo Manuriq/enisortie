@@ -121,7 +121,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/inscription/{id}',name:'app_sortie_inscription')]
     public function inscription(Sortie $sortie,SortieRepository $sortieRepository): Response{
-        if($sortie->getDateLimiteInscription() >= new \DateTime() and $sortie->getEtat()->getLibelle() == 'Ouverte'){
+        if($sortie->getDateLimiteInscription() < new \DateTime() and $sortie->getEtat()->getLibelle() != 'Ouverte'){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
         }
         $sortie->addListeInscrit($this->getUser());
@@ -133,7 +133,7 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/desinscription/{id}',name:'app_sortie_desinscription')]
     public function desinscription( Sortie $sortie,SortieRepository $sortieRepository): Response{
-        if($sortie->getDateHeureDebut() >= new \DateTime() and $sortie->getEtat()->getLibelle() == 'Ouverte'){
+        if($sortie->getDateHeureDebut() < new \DateTime() and $sortie->getEtat()->getLibelle() != 'Ouverte'){
             return $this->redirectToRoute('app_sortie_index',[], Response::HTTP_SEE_OTHER);
         }
         $sortie->removeListeInscrit($this->getUser());
