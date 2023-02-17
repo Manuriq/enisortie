@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 #[UniqueEntity("pseudo")]
@@ -72,9 +74,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface, 
     #[Vich\UploadableField(mapping: 'profil_images', fileNameProperty: 'image')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
-
 
     public function getId(): ?int
     {
@@ -271,6 +272,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface, 
         $this->campus = $campus;
     }
 
+
     public function setImageFile(File|null|UploadedFile $image):Participant
     {
         $this->imageFile = $image;
@@ -312,4 +314,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface, 
             $this->motPasse,
             ) = unserialize($serialized);
     }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 }

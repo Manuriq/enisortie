@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campus;
+use DateTimeImmutable;
 use App\Entity\Participant;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,6 +13,9 @@ class CreateAccount extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+
+        $dateImmutable = new DateTimeImmutable("now");
+
         $participant = new Participant();
         $participant->setMail("riquelme.manuel@hotmail.com");
         $participant->setPrenom("Manuel");
@@ -21,6 +25,7 @@ class CreateAccount extends Fixture
         $participant->setActif(true);
         $participant->setPseudo("Manu");
         $participant->setTelephone("0649384245");
+        $participant->setUpdatedAt($dateImmutable);
         $participant->setCampus($this->getReference(AddCampus::CAMPUS_USER_REFERENCE));
         $manager->persist($participant);
 
@@ -33,6 +38,7 @@ class CreateAccount extends Fixture
         $participant2->setActif(true);
         $participant2->setPseudo("Athalfrid");
         $participant2->setTelephone("0123456789");
+        $participant2->setUpdatedAt($dateImmutable);
         $participant2->setCampus($this->getReference(AddCampus::CAMPUS_USER_REFERENCE));
         $manager->persist($participant2);
 

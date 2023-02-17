@@ -20,12 +20,12 @@ final class Version20230214175009 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE participant ADD updated_at DATETIME NOT NULL, CHANGE image image VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE participant ADD updated_at DATETIME NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE participant DROP updated_at, CHANGE image image VARCHAR(50) DEFAULT NULL');
+        $this->addSql('ALTER TABLE participant DROP updated_at');
     }
 }
